@@ -1,5 +1,6 @@
 ﻿namespace WordGame
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -46,7 +47,12 @@
     {
         public int Compare(ScoredWord x, ScoredWord y)
         {
-            throw new System.NotImplementedException();
+            var scoreOrder = y.Score.CompareTo(x.Score);
+            var timeOrder = x.Timestamp.CompareTo(y.Timestamp);
+
+            return x.Word == y.Word ? 0 :
+                   scoreOrder != 0 ? scoreOrder :
+                   timeOrder;
         }
     }
 

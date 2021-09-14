@@ -28,5 +28,19 @@
             Assert.AreEqual(6, wordGameService.SubmitWord("player5", "woolly"));
             Assert.AreEqual(null, wordGameService.SubmitWord("player6", "adder"));
         }
+
+        [TestMethod]
+        public void TestSubmissions2()
+        {
+            Assert.AreEqual(4, wordGameService.SubmitWord("player2", "word"));
+            Assert.AreEqual(3, wordGameService.SubmitWord("player1", "all"));
+            Assert.AreEqual(6, wordGameService.SubmitWord("player5", "woolly"));
+
+            Assert.AreEqual("player5", wordGameService.GetPlayerNameAtPosition(0));
+            Assert.AreEqual("woolly", wordGameService.GetWordEntryAtPosition(0));
+
+            Assert.AreEqual("player2", wordGameService.GetPlayerNameAtPosition(1));
+            Assert.AreEqual("player1", wordGameService.GetPlayerNameAtPosition(2));
+        }
     }
 }
