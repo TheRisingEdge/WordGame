@@ -12,6 +12,9 @@
             _validLettersCount = CountLetters(letters);
         }
 
+        public ValidLetters(string letters)
+         : this(letters.ToCharArray()) { }
+
         public bool OkFor(string word)
         {
             var wordAsDict = CountLetters(word.ToCharArray());

@@ -1,4 +1,6 @@
-﻿namespace WordGame
+﻿using System;
+
+namespace WordGame
 {
     public class WordGameService : IWordGameService
     {
@@ -6,15 +8,11 @@
         private readonly ValidLetters _validLetters;
         private readonly Leaderboard _leaderboard;
 
-        public WordGameService(string letters, IValidWords validWords)
-            : this(letters.ToCharArray(), validWords)
-        { }
-
-        public WordGameService(char[] letters, IValidWords validWords)
+        public WordGameService(ValidLetters validLetters, IValidWords validWords, Leaderboard leaderboard)
         {
             _validWords = validWords;
-            _validLetters = new ValidLetters(letters);
-            _leaderboard = new Leaderboard();
+            _validLetters = validLetters;
+            _leaderboard = leaderboard;
         }
 
         public string GetPlayerNameAtPosition(int position) => _leaderboard.At(position)?.PlayerName;
@@ -39,7 +37,7 @@
 
         private ScoredWord ScoreWord(string playerName, string word)
         {
-            return new ScoredWord(playerName, word);
+            return new ScoredWord(playerName, word, DateTime.Now);
         }
 
         private bool WordIsOk(string word)

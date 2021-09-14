@@ -19,40 +19,21 @@
 
     public class Leaderboard
     {
-        private List<ScoredWord> _scores;
+        private SortedSet<ScoredWord> _scores;
 
         public Leaderboard()
         {
-            _scores = new List<ScoredWord>();
+            _scores = new SortedSet<ScoredWord>(new ScoresComparer());
         }
 
         public Submission Submit(ScoredWord scoredWord)
         {
-            lock (_scores)
+            lock (this)
             {
-                if (WordIsNew(scoredWord))
-                {
-                    InsertWord(scoredWord);
-
-                    return Submission.Ok(scoredWord);
-                }
-
-                return Submission.Rejected();
+                return _scores.Add(scoredWord) ?
+                     Submission.Ok(scoredWord):
+                     Submission.Rejected();
             }
-        }
-
-        private void InsertWord(ScoredWord scoredWord)
-        {
-            var firstLowerScoreWordIndex = _scores.FindIndex(w => w.Score < scoredWord.Score);
-            var indexToInsertAt = firstLowerScoreWordIndex < 0 ? 0 : firstLowerScoreWordIndex;
-
-            _scores.Insert(indexToInsertAt, scoredWord);
-            _scores = _scores.Take(10).ToList();
-        }
-
-        private bool WordIsNew(ScoredWord scoredWord)
-        {
-            return !_scores.Any(x => x.Word == scoredWord.Word);
         }
 
         public ScoredWord At(int position)
@@ -60,4 +41,13 @@
             return _scores.ElementAtOrDefault(position);
         }
     }
+
+    public class ScoresComparer : IComparer<ScoredWord>
+    {
+        public int Compare(ScoredWord x, ScoredWord y)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
 }
